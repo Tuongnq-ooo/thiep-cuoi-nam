@@ -147,12 +147,36 @@
   .intro { padding-top: 40px; padding-bottom: 90px; }
   .monogram { display: flex; justify-content: center; font: 400 120px/1 'Great Vibes', cursive; color: var(--gold); text-shadow: 0 4px 8px rgba(150,110,30,.25); }
   .monogram span:last-child { margin: 26px 0 0 -34px; }
-  .polaroids { display: flex; align-items: flex-start; justify-content: center; gap: 10px; margin: 26px -8px 0; }
   .pola { background: #fff; padding: 6px; box-shadow: 0 6px 18px rgba(0,0,0,.12); }
   .pola img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
-  .polaroids .pola { width: 31%; }
-  .polaroids .pola:nth-child(2) { margin-top: 26px; }
-  .intro .deco-r { right: -14%; top: 330px; width: 42%; }
+
+  /* 3 ảnh polaroid: dùng translate/rotate/scale riêng để hiệu ứng vào, bồng bềnh và hover không đè nhau */
+  .polaroids { position: relative; display: flex; align-items: center; justify-content: center; gap: 3%; margin: 34px -8px 0; }
+  .polaroids.reveal { opacity: 1; transform: none; }
+  .polaroids .pola {
+    position: relative;
+    flex: 0 0 29%;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 10px 24px rgba(90,65,20,.12);
+    opacity: 0;
+    transition: scale .4s ease, box-shadow .4s ease;
+    cursor: pointer;
+  }
+  .polaroids .pola img { aspect-ratio: 4 / 5; }
+  .polaroids .pola:nth-child(1) { translate: -150% 0; }
+  .polaroids .pola:nth-child(2) { z-index: 2; translate: 0 140px; }
+  .polaroids .pola:nth-child(2) img { aspect-ratio: 2 / 3; }
+  .polaroids .pola:nth-child(3) { translate: 150% 0; }
+  .polaroids.in .pola {
+    animation: polaIn 1.2s cubic-bezier(.2,.8,.2,1) forwards, polaFloat 5s ease-in-out infinite;
+  }
+  .polaroids.in .pola:nth-child(1) { animation-delay: .1s, 1.6s; }
+  .polaroids.in .pola:nth-child(2) { animation-delay: .5s, 2.4s; }
+  .polaroids.in .pola:nth-child(3) { animation-delay: .1s, 2s; }
+  .polaroids .pola:hover { scale: 1.07; z-index: 3; box-shadow: 0 4px 8px rgba(0,0,0,.06), 0 24px 44px rgba(90,65,20,.24); }
+  @keyframes polaIn { to { opacity: 1; translate: 0 0; } }
+  @keyframes polaFloat { 0%, 100% { opacity: 1; translate: 0 0; } 50% { opacity: 1; translate: 0 -7px; } }
+  .intro .deco-r { right: -14%; top: 420px; width: 42%; }
 
   .envelope { position: relative; width: 86%; max-width: 360px; aspect-ratio: 1; margin: 70px auto 0; }
   .env-back {
@@ -371,38 +395,43 @@
   /* ---------- Hộp quà ---------- */
   .gift-box {
     position: relative; display: block; width: 100%;
-    margin-top: 24px; padding: 40px 20px 26px;
-    background: #a3824f; border: 0; border-radius: 22px;
-    box-shadow: 0 12px 30px rgba(90,60,20,.2);
-    color: #fff; cursor: pointer;
+    margin-top: 24px;
+    background: #9f8252;
+    border: 0; border-radius: 28px;
+    box-shadow: 0 14px 34px rgba(90,60,20,.16);
+    cursor: pointer;
     overflow: hidden;
+    transition: transform .4s ease, box-shadow .4s ease;
   }
-  .mini-env {
-    position: relative; display: block; width: 70%; aspect-ratio: 1.5; margin: 0 auto;
-    background: linear-gradient(160deg, #fff, #f1ede5);
-    border-radius: 4px;
-    box-shadow: 0 10px 24px rgba(0,0,0,.25);
-    transform: rotate(-8deg);
-    transition: transform .4s ease;
+  .gift-box:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(90,60,20,.22); }
+  .gift-box:active { transform: scale(.98); }
+  /* Nền ảnh trùng màu nền hộp nên khi ảnh bồng bềnh không lộ mép */
+  .gift-art { width: 100%; animation: giftFloat 4.5s ease-in-out infinite; }
+  @keyframes giftFloat {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-6px) rotate(-1deg); }
   }
-  .mini-env::before {
-    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 58%;
-    background: linear-gradient(180deg, #f6f3ec, #e7e2d7);
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  .gift-hint {
+    margin-top: 16px;
+    font: 500 11px 'Inter', sans-serif; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold);
+    animation: hintFade 2.6s ease-in-out infinite;
   }
-  .gift-box:hover .mini-env { transform: rotate(-4deg) scale(1.03); }
-  .mini-env .seal { position: absolute; left: 50%; top: 58%; width: 30%; transform: translate(-50%, -50%); }
-  .gift-hint { display: block; margin-top: 22px; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+  @keyframes hintFade { 50% { opacity: .45; } }
 
   /* ---------- Cảm ơn ---------- */
   .thanks {
     position: relative; min-height: 80%;
     display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
-    padding: 40px 24px 120px; text-align: center; color: #fff;
-    background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.55)), url('images/NMT00776.jpg') center 30% / cover;
+    padding: 40px 24px 96px; text-align: center; color: #fff;
+    background: linear-gradient(180deg, transparent 45%, rgba(0,0,0,.35) 70%, rgba(0,0,0,.7)), url('images/NMT00776.jpg') center 30% / cover;
   }
-  .thanks .script { color: #fff; font-size: 50px; line-height: 1.2; text-shadow: 0 3px 10px rgba(0,0,0,.4); }
-  .thanks p { margin-top: 8px; font: italic 16px 'Playfair Display', serif; }
+  .thanks .script { color: #fff; font-size: clamp(30px, 9vw, 38px); line-height: 1.25; text-shadow: 0 2px 8px rgba(0,0,0,.45); }
+  .thanks .script span { white-space: nowrap; }
+  .thanks .script .amp { display: block; font-size: .7em; line-height: 1; opacity: .85; }
+  .thanks .divider { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 14px 0 10px; font-size: 12px; color: #e8cf96; }
+  .thanks .divider::before, .thanks .divider::after { content: ''; width: 48px; height: 1px; background: currentColor; opacity: .7; }
+  .thanks p { max-width: 320px; text-wrap: balance; font: italic 14px/1.6 'Playfair Display', serif; letter-spacing: .3px; opacity: .92; }
 
   /* ---------- Nút nhạc ---------- */
   .music-btn {
@@ -526,7 +555,7 @@
 
     <section class="sec intro">
       <div class="monogram reveal" aria-label="T &amp; U"><span>T</span><span>U</span></div>
-      <div class="polaroids reveal">
+      <div class="polaroids reveal replay">
         <figure class="pola"><img src="images/NMT00081.jpg" alt="" loading="lazy"></figure>
         <figure class="pola"><img src="images/NMT00408.jpg" alt="" loading="lazy"></figure>
         <figure class="pola"><img src="images/NMT00266.jpg" alt="" loading="lazy"></figure>
@@ -593,16 +622,12 @@
     </section>
 
     <section class="schedule">
-      <div class="script title reveal">Lịch Trình Buổi Tiệc</div>
+      <div class="script title reveal">Lịch Trình Buổi Lễ</div>
       <ol class="timeline reveal">
-        <li><b>11:00</b><span>Đón tiếp khách mời</span></li>
-        <li><b>12:00</b><span>Bắt đầu khai tiệc</span></li>
-        <li><b>13:30</b><span>Giao lưu &amp; Âm nhạc</span></li>
+        <li><b>11:00</b><span>Lễ cưới</span></li>
+        <li><b>12:00</b><span>Khai tiệc</span></li>
       </ol>
-      <div class="script title reveal">Trang phục</div>
-      <div class="dress reveal">
-        <i style="background:#fff"></i><i style="background:#1d1d1d"></i><i style="background:#8a8a8a"></i><i style="background:#efe7d4"></i>
-      </div>
+      
     </section>
 
     <section class="sec story">
@@ -712,13 +737,14 @@
       <div class="script title reveal">Hộp Quà Mừng</div>
       <p class="desc reveal">Sự hiện diện của bạn chính là món quà ý nghĩa nhất. Nếu bạn muốn gửi quà, có thể tham khảo thông tin dưới đây.</p>
       <button type="button" class="gift-box reveal" id="giftOpen" aria-label="Mở hộp quà mừng">
-        <span class="mini-env"><img class="seal" src="images/deco-seal.jpg" alt=""></span>
-        <span class="gift-hint">Nhấn để mở</span>
+        <img class="gift-art" src="images/gift-envelope.jpg" alt="" loading="lazy">
       </button>
+      <p class="gift-hint">Chạm để mở quà</p>
     </section>
 
     <section class="thanks">
-      <div class="script reveal">Quang Tường &amp; Thu Uyên</div>
+      <div class="script reveal"><span>Quang Tường</span><span class="amp">&amp;</span><span>Thu Uyên</span></div>
+      <div class="divider reveal">❦</div>
       <p class="reveal">Cảm ơn bạn đã chia sẻ niềm vui cùng chúng mình</p>
     </section>
   </main>
@@ -923,11 +949,15 @@
     stop();
   }
 
+  // Phần tử có class "replay": ra khỏi màn hình thì reset để lần cuộn tới sau chạy lại hiệu ứng
   const observer = new IntersectionObserver(entries => {
     entries.forEach(en => {
+      const replay = en.target.classList.contains('replay');
       if (en.intersectionRatio >= 0.15) {
         en.target.classList.add('in');
-        observer.unobserve(en.target);
+        if (!replay) observer.unobserve(en.target);
+      } else if (replay && !en.isIntersecting) {
+        en.target.classList.remove('in');
       }
     });
   }, { root: main, threshold: [0, 0.15] });
