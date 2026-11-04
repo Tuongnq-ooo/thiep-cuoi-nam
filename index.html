@@ -143,11 +143,11 @@
   .pola img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
 
   /* 3 ảnh polaroid: dùng translate/rotate/scale riêng để hiệu ứng vào, bồng bềnh và hover không đè nhau */
-  .polaroids { position: relative; display: flex; align-items: center; justify-content: center; gap: 3%; margin: 34px -8px 0; }
+  .polaroids { position: relative; display: flex; align-items: center; justify-content: center; gap: 2%; margin: 34px -16px 0; }
   .polaroids.reveal { opacity: 1; transform: none; }
   .polaroids .pola {
     position: relative;
-    flex: 0 0 29%;
+    flex: 0 0 30%;
     padding: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 10px 24px rgba(90,65,20,.12);
     opacity: 0;
@@ -156,7 +156,7 @@
   }
   .polaroids .pola img { aspect-ratio: 4 / 5; }
   .polaroids .pola:nth-child(1) { translate: -150% 0; }
-  .polaroids .pola:nth-child(2) { z-index: 2; translate: 0 140px; }
+  .polaroids .pola:nth-child(2) { flex-basis: 36%; z-index: 2; translate: 0 140px; }
   .polaroids .pola:nth-child(2) img { aspect-ratio: 2 / 3; }
   .polaroids .pola:nth-child(3) { translate: 150% 0; }
   .polaroids.in .pola {
@@ -645,9 +645,9 @@
     <section class="sec intro">
       <div class="monogram reveal" aria-label="T &amp; U"><span>T</span><span>U</span></div>
       <div class="polaroids reveal replay">
-        <figure class="pola"><img src="images/NMT00081.jpg" alt="" loading="lazy"></figure>
+        <figure class="pola"><img src="images/NMT00195.jpg" alt="" loading="lazy"></figure>
+        <figure class="pola"><img src="images/NMT00506.jpg" alt="" loading="lazy"></figure>
         <figure class="pola"><img src="images/NMT00408.jpg" alt="" loading="lazy"></figure>
-        <figure class="pola"><img src="images/NMT00266.jpg" alt="" loading="lazy"></figure>
       </div>
       <img class="deco deco-r" src="images/deco-flower-right.jpg" alt="">
       <div class="envelope reveal replay">
@@ -794,16 +794,16 @@
     <section class="sec">
       <div class="script title reveal">Khoảnh Khắc</div>
       <div class="gallery reveal" id="gallery">
-        <div class="ph" style="background-image:url('images/NMT00490.jpg')"></div>
-        <div class="ph" style="background-image:url('images/NMT00081.jpg')"></div>
-        <div class="ph" style="background-image:url('images/NMT00180.jpg')"></div>
-        <div class="ph" style="background-image:url('images/NMT00131.jpg')"></div>
-        <div class="ph" style="background-image:url('images/NMT00237.jpg')"></div>
-        <div class="ph" style="background-image:url('images/NMT00266.jpg')"></div>
-        <div class="ph" style="background-image:url('images/NMT00353.jpg')"></div>
-        <div class="ph" style="background-image:url('images/NMT00408.jpg')"></div>
-        <div class="ph" style="background-image:url('images/NMT00700.jpg')"></div>
+        <div class="ph" style="background-image:url('images/NMT00120.jpg')"></div>
+        <div class="ph" style="background-image:url('images/NMT00288.jpg')"></div>
+        <div class="ph" style="background-image:url('images/NMT00729.jpg')"></div>
+        <div class="ph" style="background-image:url('images/NMT00372.jpg')"></div>
+        <div class="ph" style="background-image:url('images/NMT00406.jpg')"></div>
+        <div class="ph" style="background-image:url('images/NMT00397.jpg')"></div>
         <div class="ph" style="background-image:url('images/NMT00776.jpg')"></div>
+        <div class="ph" style="background-image:url('images/NMT00116.jpg')"></div>
+        <div class="ph" style="background-image:url('images/NMT00700.jpg')"></div>
+        <div class="ph" style="background-image:url('images/NMT00826.jpg')"></div>
         <button class="gallery-nav prev" aria-label="Ảnh trước">‹</button>
         <button class="gallery-nav next" aria-label="Ảnh sau">›</button>
       </div>
