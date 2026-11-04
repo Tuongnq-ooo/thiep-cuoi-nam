@@ -14,8 +14,10 @@ function getSheet(name, header) {
   return sheet;
 }
 
-const wishSheet = () => getSheet('LoiChuc', ['Thời gian', 'Tên', 'Lời chúc']);
-const rsvpSheet = () => getSheet('XacNhan', ['Thời gian', 'Tên', 'Tham dự', 'Số khách', 'Lời nhắn']);
+// Dự án nhà gái đặt GB_API = '<URL Web App>?nha=gai', nhà trai để nguyên URL (hoặc ?nha=trai)
+const sideName = side => side === 'gai' ? 'NhaGai' : 'NhaTrai';
+const wishSheet = side => getSheet('LoiChuc_' + sideName(side), ['Thời gian', 'Tên', 'Lời chúc']);
+const rsvpSheet = side => getSheet('XacNhan_' + sideName(side), ['Thời gian', 'Tên', 'Tham dự', 'Số khách', 'Lời nhắn']);
 
 function json(data) {
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
@@ -32,8 +34,8 @@ function appendRow(sheet, row) {
   lock.releaseLock();
 }
 
-function doGet() {
-  const rows = wishSheet().getDataRange().getValues().slice(1).reverse().slice(0, 200);
+function doGet(e) {
+  const rows = wishSheet(e.parameter.nha).getDataRange().getValues().slice(1).reverse().slice(0, 200);
   return json(rows.map(r => ({ time: new Date(r[0]).getTime(), name: String(r[1]), msg: String(r[2]) })));
 }
 
@@ -45,11 +47,11 @@ function doPost(e) {
   if (data.type === 'rsvp') {
     if (!name) return json({ ok: false });
     const guests = data.attend ? Math.min(Math.max(parseInt(data.guests, 10) || 1, 1), 20) : 0;
-    appendRow(rsvpSheet(), [new Date(), safe(name), data.attend ? 'Sẽ đến' : 'Không đến', guests, safe(msg)]);
+    appendRow(rsvpSheet(e.parameter.nha), [new Date(), safe(name), data.attend ? 'Sẽ đến' : 'Không đến', guests, safe(msg)]);
     return json({ ok: true });
   }
 
   if (!name || !msg) return json({ ok: false });
-  appendRow(wishSheet(), [new Date(), safe(name), safe(msg)]);
+  appendRow(wishSheet(e.parameter.nha), [new Date(), safe(name), safe(msg)]);
   return json({ ok: true });
 }
