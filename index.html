@@ -230,6 +230,14 @@
   .banner img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
   .banner .deco-r { right: -10%; bottom: -90px; width: 44%; }
 
+  .quote {
+    position: relative; z-index: 1;
+    margin: 0; padding: 64px 20px 0; text-align: center;
+    font-size: clamp(20px, 5.8vw, 26px); line-height: 1.5; color: var(--gold);
+    text-wrap: balance;
+  }
+  .quote > span { display: block; }
+  .quote + .family { padding-top: 40px; }
   .family { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 14px; padding-top: 70px; padding-bottom: 30px; }
   .family h4 { font: 700 18px 'Playfair Display', serif; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
   .family p { font: 15px/1.7 'Playfair Display', serif; color: var(--ink); }
@@ -660,6 +668,11 @@
       <img src="images/NMT00180.jpg" alt="" loading="lazy">
       <img class="deco deco-r" src="images/deco-flower-right.jpg" alt="">
     </div>
+
+    <blockquote class="quote script reveal replay stagger">
+      <span data-scatter>“Hôn nhân là chuyện cả đời;</span>
+      <span data-scatter style="--base:.6s">Yêu người vừa ý, cưới người mình thương...”</span>
+    </blockquote>
 
     <section class="sec family reveal replay stagger">
       <div>
