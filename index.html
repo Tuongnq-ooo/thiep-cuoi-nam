@@ -22,6 +22,9 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
+  /* Số thẳng hàng cao bằng chữ hoa (Playfair mặc định dùng số kiểu cổ cao thấp không đều).
+     Cần !important vì khai báo font: ... ở từng phần tử sẽ đặt lại font-feature-settings */
+  *, *::before, *::after { font-feature-settings: 'lnum' 1 !important; }
   body {
     font-family: 'Inter', system-ui, sans-serif;
     background: #000;
@@ -76,6 +79,21 @@
 
   .sec { position: relative; padding: 56px 24px; text-align: center; }
   .script { font-family: 'Great Vibes', cursive; font-weight: 400; color: var(--gold); text-shadow: 0 3px 6px rgba(150,110,30,.22); }
+  /* Trái tim thay ký tự & giữa tên: tô bằng currentColor để tự theo màu chữ xung quanh */
+  .heart {
+    display: inline-block; width: .6em; height: .54em; vertical-align: middle;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 22'%3E%3Cpath d='M12 21.5S1 14.6 1 7.4C1 3.8 3.8 1 7.2 1c2 0 3.8 1 4.8 2.6C13 2 14.8 1 16.8 1 20.2 1 23 3.8 23 7.4c0 7.2-11 14.1-11 14.1z'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 22'%3E%3Cpath d='M12 21.5S1 14.6 1 7.4C1 3.8 3.8 1 7.2 1c2 0 3.8 1 4.8 2.6C13 2 14.8 1 16.8 1 20.2 1 23 3.8 23 7.4c0 7.2-11 14.1-11 14.1z'/%3E%3C/svg%3E") center / contain no-repeat;
+    animation: heartbeat 1.8s ease-in-out infinite;
+  }
+  .hero-names .heart, .names-big .heart, .thanks .heart { display: block; margin: .14em auto; }
+  @keyframes heartbeat {
+    0%, 60%, 100% { transform: scale(1); }
+    15% { transform: scale(1.2); }
+    30% { transform: scale(.95); }
+    45% { transform: scale(1.12); }
+  }
   .title { font-size: 46px; line-height: 1.2; }
   .desc { max-width: 340px; margin: 0 auto; font-size: 15px; line-height: 1.6; color: var(--ink); }
   .btn {
@@ -192,6 +210,7 @@
   .env-names { margin: 4px 0; font-size: clamp(30px, 9vw, 38px); line-height: .98; }
   .env-names span { display: inline-block; }
   .env-names .amp { font-size: .7em; }
+  .env-names .heart { width: .85em; height: .76em; }
 
   /* Chữ trên phong bì: chạy lần lượt khi cuộn tới (dùng translate/scale riêng, không đè transform sẵn có) */
   .envelope .env-invite, .envelope .env-names span, .envelope .env-date, .envelope .env-seal {
@@ -240,7 +259,7 @@
   .quote + .family { padding-top: 40px; }
   .family { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 12px; padding: 70px 14px 30px; }
   .family h4 { font: 700 clamp(16px, 4.6vw, 19px) 'Playfair Display', serif; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
-  .family p { font: clamp(12.5px, 3.8vw, 16px)/1.75 'Playfair Display', serif; color: var(--ink); white-space: nowrap; }
+  .family p { font: 600 clamp(12.5px, 3.8vw, 16px)/1.75 'Playfair Display', serif; color: var(--ink); white-space: nowrap; }
   .family > div { container-type: inline-size; }
   /* Địa chỉ luôn 2 dòng ở cả 2 bên: cỡ chữ co theo độ rộng cột để dòng dài nhất vừa khít */
   .family .addr { margin-top: 6px; font: italic min(14px, 7.6cqi)/1.6 'Lora', serif; opacity: .9; }
@@ -290,6 +309,8 @@
   .ev-head.in .desc { opacity: 1; translate: 0 0; }
 
   .names-big > span { display: block; }
+  .names-big .heart { width: .44em; height: .4em; scale: 0; transition: scale .9s cubic-bezier(.3,1.6,.5,1) .6s; }
+  .names-big.in .heart { scale: 1; }
 
   /* Thời gian, địa điểm: từng dòng trồi lên lần lượt; ngày "12" phóng to từ mờ, hai bên trượt vào */
   .ev-body > * { opacity: 0; translate: 0 26px; transition: opacity .8s ease, translate .9s cubic-bezier(.2,.8,.2,1); }
@@ -658,6 +679,15 @@
     background: #f1e8d4; border: none; border-radius: 20px;
     cursor: pointer;
   }
+  /* Chỉ còn 1 tài khoản: thu gọn hộp, QR to và căn giữa */
+  .gift-card:has(.gift-acc:only-child) { max-width: 340px; }
+  .gift-accounts:has(> .gift-acc:only-child) { grid-template-columns: 1fr; padding: 24px 28px 28px; }
+  .gift-acc:only-child h5 { font-size: 16px; margin-bottom: 16px; }
+  .gift-acc:only-child .gift-qr { max-width: 230px; padding: 14px; border-radius: 18px; margin-bottom: 16px; }
+  .gift-acc:only-child .bank { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+  .gift-acc:only-child .number { font-size: 18px; letter-spacing: 1.5px; }
+  .gift-acc:only-child .owner { font-size: 14px; letter-spacing: .5px; }
+  .gift-acc:only-child .gift-save { margin-top: 16px; padding: 9px 20px; font-size: 13px; }
 </style>
 </head>
 <body>
@@ -699,7 +729,7 @@
       <svg class="hero-vine left" viewBox="0 0 200 90"><use href="#vine"/></svg>
       <svg class="hero-vine right" viewBox="0 0 200 90"><use href="#vine"/></svg>
       <div class="hero-title">Wedding day</div>
-      <div class="hero-names"><span>Quang Tường</span><span class="amp">&amp;</span><span>Thu Uyên</span></div>
+      <div class="hero-names"><span>Quang Tường</span><span class="amp heart" role="img" aria-label="và"></span><span>Thu Uyên</span></div>
       <div class="hero-date">12.12.2026</div>
     </header>
 
@@ -715,7 +745,7 @@
         <div class="env-back"></div>
         <div class="env-paper">
           <p class="env-invite">You're invited to the<br>wedding of</p>
-          <p class="env-names script"><span class="n1">Quang Tường</span><br><span class="amp">&amp;</span><br><span class="n2">Thu Uyên</span></p>
+          <p class="env-names script"><span class="n1">Quang Tường</span><br><span class="amp heart" role="img" aria-label="và"></span><br><span class="n2">Thu Uyên</span></p>
           <p class="env-date">12.12.2026</p>
         </div>
         <div class="env-front"></div>
@@ -758,7 +788,7 @@
         <hr class="dash">
         <p class="desc">Đến dự bữa tiệc thân mật mừng ngày hạnh phúc của hai gia đình chúng tôi</p>
       </div>
-      <p class="script names-big reveal replay stagger"><span data-scatter>Quang Tường</span><span data-scatter style="--base:.6s">&amp;</span><span data-scatter style="--base:.8s">Thu Uyên</span></p>
+      <p class="script names-big reveal replay stagger"><span data-scatter>Quang Tường</span><span class="heart" role="img" aria-label="và"></span><span data-scatter style="--base:.8s">Thu Uyên</span></p>
       <div class="ev-body reveal replay stagger">
         <p class="ev-time" style="--k:0">12:00, Thứ Bảy</p>
         <div class="ev-date" style="--k:1"><span>Tháng 12</span><b>12</b><span>Năm 2026</span></div>
@@ -898,7 +928,7 @@
     </section>
 
     <section class="thanks">
-      <div class="script reveal"><span>Quang Tường</span><span class="amp">&amp;</span><span>Thu Uyên</span></div>
+      <div class="script reveal"><span>Quang Tường</span><span class="amp heart" role="img" aria-label="và"></span><span>Thu Uyên</span></div>
       <div class="divider reveal">❦</div>
       <p class="reveal">Cảm ơn bạn đã chia sẻ niềm vui cùng chúng mình</p>
     </section>
@@ -1428,13 +1458,14 @@
 
   loadRsvp();
 
+  // hidden: true để tạm ẩn tài khoản khỏi hộp quà
   const GIFT_ACCOUNTS = [
     { role: 'Chú Rể', name: 'Quang Tường', owner: 'NGUYEN QUANG TUONG', bank: 'Techcombank', account: '19033123843017', qr: 'images/qr-groom.jpg' },
-    { role: 'Cô Dâu', name: 'Thu Uyên', owner: 'TRAN THI THU UYEN', bank: 'VietinBank', account: '105882224632', qr: 'images/qr-bride.jpg' }
+    { role: 'Cô Dâu', name: 'Thu Uyên', owner: 'TRAN THI THU UYEN', bank: 'VietinBank', account: '105882224632', qr: 'images/qr-bride.jpg', hidden: true }
   ];
   const giftModal = document.getElementById('giftModal');
 
-  document.getElementById('giftAccounts').replaceChildren(...GIFT_ACCOUNTS.map(acc => {
+  document.getElementById('giftAccounts').replaceChildren(...GIFT_ACCOUNTS.filter(acc => !acc.hidden).map(acc => {
     const el = document.createElement('div');
     el.className = 'gift-acc';
     el.innerHTML = `
